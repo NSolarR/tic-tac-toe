@@ -8,6 +8,10 @@
     justify-content: center;
 }
 
+.hidden{
+     display: none;
+}
+
 .board{
     background-color: black;
     width: 400px;
