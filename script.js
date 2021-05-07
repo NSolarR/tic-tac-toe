@@ -30,7 +30,10 @@ const player2 = player(undefined,"o");
 
 //Controls the visual display of the board
 const displayController = (() => {
-    let gameReady = false;
+    let gameReady;
+    if(gameReady === undefined) {
+        gameReady = false;
+    }
 
     const slots = document.querySelectorAll(".slot");
 
@@ -59,11 +62,13 @@ const displayController = (() => {
                     player1Turn = false;
                     player2Turn = true;
                     setSlots();
+                    winCondition.set();
                 } else {
                     slot.textContent = player2.shape;
                     player1Turn = true;
                     player2Turn = false;
                     setSlots();
+                    winCondition.set();
                 }   
             }
         })
@@ -105,7 +110,8 @@ const displayController = (() => {
             player2.isAi = false;
         }
         
-
+        player1Turn = true;
+        player2Turn = false;
         gameReady = true;
     });
 
@@ -124,7 +130,6 @@ const displayController = (() => {
         for (let i = 0; i <= toArray.length-1; i++){
             slotText[i] = toArray[i].textContent;
         }
-        console.table(slotText);
         return;
     }
 
@@ -137,23 +142,54 @@ const displayController = (() => {
 
 //Check for winning conditions
 const winCondition = (() => {
-    
-    if (slotText[0] === "o", slotText[1] === "o", slotText[2] === "o") {
 
-    }
-    return{}
+    //get array of all possible combos to win
+    function set(){
+        let row1 = [slotText[0],slotText[1],slotText[2]];
+        let row2 = [slotText[3],slotText[4],slotText[5]];
+        let row3 = [slotText[6],slotText[7],slotText[8]];
+
+        let col1 = [slotText[0],slotText[3],slotText[6]];
+        let col2 = [slotText[1],slotText[4],slotText[7]];
+        let col3 = [slotText[2],slotText[5],slotText[8]];
+
+        let diag1 = [slotText[0],slotText[4],slotText[8]];
+        let diag2 = [slotText[6],slotText[4],slotText[2]];
+
+        let conditions = [row1, row2, row3, col1, col2, col3, diag1, diag2];
+        checkForWin(conditions);
+    };
+
+    //function that checks if a winning combination exists after getting array from set()
+    function checkForWin (x) {
+        x.forEach(e => {
+            if (e[0] === 'o' && e[1] === 'o' && e[2] === 'o') {
+                win ('o');
+            } else if (e[0] === 'x' && e[1] === 'x' && e[2] === 'x') {
+                win ('x');
+            }
+        });
+    };
+
+    //function to be called if winner is reached
+    function win(x) {
+        if (x === "o") {
+            alert("player 2 wins");
+            return;
+        } else {
+            alert("player 1 wins");
+            return;
+        }
+    };
+
+    return {set:set};
 })();
 
 //Controls the game by changing turns after player takes an action
 const gameFlow = (() => {
-    if (displayController.gameReady) {
-        player1Turn = true;
-        player2Turn = false;
-    }
-
     function playTurn(){
         if(player1Turn && player1.isAi) {
-
+            
         } else if (player2Turn && player2.isAi){
             
         } else if (player1Turn && !player1.isAi){
@@ -163,7 +199,7 @@ const gameFlow = (() => {
         }
     }
     
-    return {play: playTurn()};
+    return {play: playTurn};
 })();
 
 
