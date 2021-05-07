@@ -1,4 +1,6 @@
 //Global ------------------------------
+let slotText = [];
+
 let choiceMade;
 if (choiceMade === undefined){
     choiceMade = false;
@@ -25,11 +27,13 @@ const player1 = player(undefined,"x");
 const player2 = player(undefined,"o");
 //Global End --------------------------
 
+
 //Controls the visual display of the board
 const displayController = (() => {
     let gameReady = false;
 
     const slots = document.querySelectorAll(".slot");
+
 
     const settings = document.getElementById("settings");
     const game = document.getElementById("game");
@@ -54,18 +58,12 @@ const displayController = (() => {
                     slot.textContent = player1.shape;
                     player1Turn = false;
                     player2Turn = true;
-                    
-                    
-                    winCondition.say;
-                    
+                    setSlots();
                 } else {
                     slot.textContent = player2.shape;
                     player1Turn = true;
                     player2Turn = false;
-                    
-                    
-                    winCondition.say;
-
+                    setSlots();
                 }   
             }
         })
@@ -120,6 +118,15 @@ const displayController = (() => {
         game.classList.add("hidden");
     }
 
+    //Gets an array of what value each square is
+    function setSlots() {
+        const toArray = Array.from(slots);
+        for (let i = 0; i <= toArray.length-1; i++){
+            slotText[i] = toArray[i].textContent;
+        }
+        console.table(slotText);
+        return;
+    }
 
     
     return {buttons: buttonArray,
@@ -130,14 +137,11 @@ const displayController = (() => {
 
 //Check for winning conditions
 const winCondition = (() => {
-
-    function say() {
-        let slotsv = displayController.slots;
-        let row1 = [slotsv[0].textContent, slotsv[1].textContent, slotsv[3].textContent];
-        console.table(row1);
-    }
     
-    return {say: say()};
+    if (slotText[0] === "o", slotText[1] === "o", slotText[2] === "o") {
+
+    }
+    return{}
 })();
 
 //Controls the game by changing turns after player takes an action
@@ -161,3 +165,5 @@ const gameFlow = (() => {
     
     return {play: playTurn()};
 })();
+
+
