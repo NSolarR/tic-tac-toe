@@ -26,8 +26,6 @@ const player2 = player(undefined,"o");
 //Controls the visual display of the board
 const displayController = (() => {
 
-    const quickRestart = false;
-
     const slots = document.querySelectorAll(".slot");
 
 
@@ -41,8 +39,14 @@ const displayController = (() => {
 
     const playerButton1 = document.querySelector(".player1");
     const playerButton2 = document.querySelector(".player2");
+
+    const settingButton = document.querySelector(".change");
+    const restartButton = document.querySelector(".restart");
     
     const buttonArray = [aiButton1, playerButton1, aiButton2, playerButton2];
+
+    settingButton.addEventListener("click", goToSettings);
+    restartButton.addEventListener("click", restartGame);
 
     //Add event listeners to slots
     slots.forEach(slot => {
@@ -52,18 +56,22 @@ const displayController = (() => {
             } else {
                 if(player1Turn && !player1.isAi) {
                     slot.textContent = player1.shape;
+                    slot.classList.add("fade");
                     setSlots();
-                    winCondition.set();
                     player1Turn = false;
                     player2Turn = true;
-                    gameFlow.play();
+                    winCondition.set();
+                    
+                    setTimeout(gameFlow.play, 1000);
                 } else if(player2Turn && !player2.isAi) {
                     slot.textContent = player2.shape;
+                    slot.classList.add("fade");
                     setSlots();
-                    winCondition.set();
                     player2Turn = false;
                     player1Turn = true;
-                    gameFlow.play();
+                    winCondition.set();
+                    
+                    setTimeout(gameFlow.play, 1000);
                 }
             }
         })
@@ -127,6 +135,26 @@ const displayController = (() => {
         game.classList.add("hidden");
     }
 
+    function restartGame() {
+        slots.forEach(slot => {
+            slot.textContent = undefined;
+            slot.classList.remove("fade");
+        });
+        player1Turn = true;
+        player2Turn = false;
+    }   
+
+    function goToSettings() {
+        slots.forEach(slot => {
+            slot.textContent = undefined;
+            slot.classList.remove("fade");
+        });
+        settings.classList.remove("hidden");
+        game.classList.add("hidden");
+        player1Turn = undefined;
+        player2Turn = undefined;
+    }
+
     //Gets an array of what value each square is
     function setSlots() {
         const toArray = Array.from(slots);
@@ -136,30 +164,11 @@ const displayController = (() => {
         return;
     }
 
-    function clear() {
-        slots.forEach(slot => {
-            slot.textContent = undefined;
-        });
-        player1.isAi = undefined;
-        player2.isAi = undefined;
-        player1Turn = undefined;
-        player2Turn = undefined;
-
-        restart();
-    }
-
-    function restart() {
-        if (!quickRestart) {
-            settings.classList.remove("hidden");
-            game.classList.add("hidden");
-        }
-      
-    }
-    
     return {buttons: buttonArray,
             slots: slots,
             set: setSlots,
-            clear: clear
+            setting: goToSettings,
+            restart: restartGame
     };
 })();
 
@@ -185,25 +194,54 @@ const winCondition = (() => {
     };
 
     //function that checks if a winning combination exists after getting array from set()
+    //if it doesn't detect a legal win, runs func for tie
     function checkForWin (x) {
-        x.forEach(e => {
-            if (e[0] === 'o' && e[1] === 'o' && e[2] === 'o') {
-                win ('o');
-            } else if (e[0] === 'x' && e[1] === 'x' && e[2] === 'x') {
-                win ('x');
+        let i;
+        if (i === undefined) {
+            i = 0;
+        }
+        
+        displayController.slots.forEach (el => {
+            if (el.textContent === 'o' || el.textContent === 'x' ) {
+                i++;
+                console.log(i);
+                
             }
+
         });
+
+        if (i < 9) {
+            x.forEach(e => {
+                if (e[0] === 'o' && e[1] === 'o' && e[2] === 'o') {
+                    i = undefined;
+                    win ('o');
+                } else if (e[0] === 'x' && e[1] === 'x' && e[2] === 'x') {
+                    i = undefined;
+                    win ('x');
+                }
+            });
+        } else {
+            i = undefined;
+            win('tie');
+        }
+
+       
     };
 
     //function to be called if winner is reached
     function win(x) {
-        if (x === "o") {
-           
-            displayController.clear();
+        if (x === 'tie') {
+            player1Turn = undefined;
+            player2Turn = undefined;
+            return;
+        } else if (x === "o") {
+            player1Turn = undefined;
+            player2Turn = undefined;
             return;
         } else {
-           
-            displayController.clear();
+            player1Turn = undefined;
+            player2Turn = undefined;
+
             return;
         }
     };
@@ -221,6 +259,7 @@ const gameFlow = (() => {
             let x = Math.floor(Math.random() * displayController.slots.length);
             if (!displayController.slots[x].textContent){
                 displayController.slots[x].textContent = `${player1.shape}`;
+                displayController.slots[x].classList.add("fade");
                 player1Turn = false;
                 player2Turn = true;
                 displayController.set();
@@ -235,6 +274,7 @@ const gameFlow = (() => {
             let x = Math.floor(Math.random() * displayController.slots.length);
             if (!displayController.slots[x].textContent){
                 displayController.slots[x].textContent = `${player2.shape}`;
+                displayController.slots[x].classList.add("fade");
                 player2Turn = false;
                 player1Turn = true;
                 displayController.set();
