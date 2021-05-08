@@ -1,11 +1,6 @@
 //Global ------------------------------
 let slotText = [];
 
-let choiceMade;
-if (choiceMade === undefined){
-    choiceMade = false;
-}
-
 let player1Turn;
 let player2Turn;
 
@@ -27,9 +22,11 @@ const player1 = player(undefined,"x");
 const player2 = player(undefined,"o");
 //Global End --------------------------
 
-
+//------------------------------------------------------------------
 //Controls the visual display of the board
 const displayController = (() => {
+
+    const quickRestart = false;
 
     const slots = document.querySelectorAll(".slot");
 
@@ -139,13 +136,34 @@ const displayController = (() => {
         return;
     }
 
+    function clear() {
+        slots.forEach(slot => {
+            slot.textContent = undefined;
+        });
+        player1.isAi = undefined;
+        player2.isAi = undefined;
+        player1Turn = undefined;
+        player2Turn = undefined;
+
+        restart();
+    }
+
+    function restart() {
+        if (!quickRestart) {
+            settings.classList.remove("hidden");
+            game.classList.add("hidden");
+        }
+      
+    }
     
     return {buttons: buttonArray,
             slots: slots,
-            set: setSlots
+            set: setSlots,
+            clear: clear
     };
 })();
 
+//------------------------------------------------------------------
 //Check for winning conditions
 const winCondition = (() => {
 
@@ -180,10 +198,12 @@ const winCondition = (() => {
     //function to be called if winner is reached
     function win(x) {
         if (x === "o") {
-            alert("player 2 wins");
+           
+            displayController.clear();
             return;
         } else {
-            alert("player 1 wins");
+           
+            displayController.clear();
             return;
         }
     };
@@ -191,7 +211,8 @@ const winCondition = (() => {
     return {set:set};
 })();
 
-//Controls the game by changing turns after player takes an action
+//------------------------------------------------------------------
+//Module that runs ai functionality if it's an ai's turn to play
 const gameFlow = (() => {
 
     //Function that runs when ai player's turn is up

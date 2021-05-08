@@ -1,13 +1,18 @@
 html, body {
+    background-color: rgb(248, 206, 213);
     height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 
 .board-container {
-    margin-top: 5%;
+    margin-top: 9%;
     height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    
 }
 
 .hidden{
@@ -17,7 +22,11 @@ html, body {
 }
 
 .board{
-    background-color: black;
+    transform: scale(1.5);
+    border-style: solid;
+    border-color: rgb(16, 23, 31);
+    border-radius: 10px;
+    background-color: rgb(27, 39, 53);
     width: 400px;
     height: 400px;
 
@@ -26,20 +35,62 @@ html, body {
     'area area area'
     'area area area'
     'area area area';
+
+    box-shadow: 5px 5px 8px rgb(37, 36, 36);
 }
 
 .slot{
+  
+    color: rgb(16, 23, 31, 1);
     text-align: center;
     font-size: 90px;
     margin: auto;
-    background-color: white;
+    background-color: rgb(104, 197, 182);
     grid-area: auto;
-    width: 100px;
-    height: 100px;
+    width: 125px;
+    height: 125px;
     padding: 0;
-}
+    
+  }
+
+  .slot text {
+    animation: fadeIn linear 7s;
+    -webkit-animation: fadeIn linear 7s;
+    -moz-animation: fadeIn linear 7s;
+    -o-animation: fadeIn linear 7s;
+    -ms-animation: fadeIn linear 7s;
+  }
+  
+  @keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-o-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+
+
 
 #settings {
+    transform: scale(2);
     height: 85%;
     display: grid;
     grid-template-areas: 
@@ -68,8 +119,10 @@ html, body {
 }
 
 .selected {
-    background-color: aqua;
-    color:brown;
+    background-color: rgb(27, 39, 53);
+    border-style: solid;
+    border-color:rgb(248, 206, 213);
+    color:rgb(248, 206, 213);
 }
 
 #start {
