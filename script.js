@@ -30,10 +30,6 @@ const player2 = player(undefined,"o");
 
 //Controls the visual display of the board
 const displayController = (() => {
-    let gameReady;
-    if(gameReady === undefined) {
-        gameReady = false;
-    }
 
     const slots = document.querySelectorAll(".slot");
 
@@ -57,19 +53,21 @@ const displayController = (() => {
             if(slot.textContent === "o" || slot.textContent === "x") {
                 return;
             } else {
-                if(player1Turn) {
+                if(player1Turn && !player1.isAi) {
                     slot.textContent = player1.shape;
+                    setSlots();
+                    winCondition.set();
                     player1Turn = false;
                     player2Turn = true;
-                    setSlots();
-                    winCondition.set();
-                } else {
+                    gameFlow.play();
+                } else if(player2Turn && !player2.isAi) {
                     slot.textContent = player2.shape;
-                    player1Turn = true;
-                    player2Turn = false;
                     setSlots();
                     winCondition.set();
-                }   
+                    player2Turn = false;
+                    player1Turn = true;
+                    gameFlow.play();
+                }
             }
         })
     })
@@ -94,6 +92,9 @@ const displayController = (() => {
         if (aiButton2.classList.contains("selected") && playerButton2.classList.contains("selected")) {
             return;
         }
+        if (aiButton1.classList.contains("selected") && aiButton2.classList.contains("selected")) {
+            return;
+        }
 
         settings.classList.add("hidden");
         game.classList.remove("hidden");
@@ -112,7 +113,12 @@ const displayController = (() => {
         
         player1Turn = true;
         player2Turn = false;
-        gameReady = true;
+
+        if (player1.isAi) {
+            gameFlow.play();
+        }
+        
+        return;
     });
 
 
@@ -136,7 +142,7 @@ const displayController = (() => {
     
     return {buttons: buttonArray,
             slots: slots,
-            ready: gameReady
+            set: setSlots
     };
 })();
 
@@ -187,16 +193,40 @@ const winCondition = (() => {
 
 //Controls the game by changing turns after player takes an action
 const gameFlow = (() => {
+
+    //Function that runs when ai player's turn is up
     function playTurn(){
         if(player1Turn && player1.isAi) {
-            
+            let x = Math.floor(Math.random() * displayController.slots.length);
+            if (!displayController.slots[x].textContent){
+                displayController.slots[x].textContent = `${player1.shape}`;
+                player1Turn = false;
+                player2Turn = true;
+                displayController.set();
+                winCondition.set();
+                return;
+            } else {
+                playTurn();
+                return;
+            }
+
         } else if (player2Turn && player2.isAi){
-            
-        } else if (player1Turn && !player1.isAi){
+            let x = Math.floor(Math.random() * displayController.slots.length);
+            if (!displayController.slots[x].textContent){
+                displayController.slots[x].textContent = `${player2.shape}`;
+                player2Turn = false;
+                player1Turn = true;
+                displayController.set();
+                winCondition.set();
+                return;
+            } else {
+                playTurn();
+                return;
+            }
 
-        } else if (player2Turn && !player2.isAi){
-
-        }
+        } else {
+            return;
+        } 
     }
     
     return {play: playTurn};
