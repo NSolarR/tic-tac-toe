@@ -60,7 +60,45 @@ html, body {
     padding: 0;
     
   }
-.fade {
+
+.fadex {
+    animation: fadeInx linear 1s;
+    -webkit-animation: fadeInx linear 1s;
+    -moz-animation: fadeInx linear 1s;
+    -o-animation: fadeInx linear 1s;
+    -ms-animation: fadeInx linear 1s;
+}
+  
+  @keyframes fadeInx {
+    0% {color: rgb(10, 78, 10, 0)}
+    100% {color:  rgb(10, 78, 10, 1)}
+  }
+  
+  @-moz-keyframes fadeInx {
+    0% {color: rgb(10, 78, 10, 0)}
+    100% {color:  rgb(10, 78, 10, 1)}
+  }
+  
+  @-webkit-keyframes fadeInx {
+    0% {color: rgb(10, 78, 10, 0)}
+    100% {color:  rgb(10, 78, 10, 1)}
+  }
+  
+  @-o-keyframes fadeInx {
+    0% {color: rgb(10, 78, 10, 0)}
+    100% {color:  rgb(10, 78, 10, 1)}
+  }
+  
+  @-ms-keyframes fadeInx {
+    0% {color: rgb(10, 78, 10, 0)}
+    100% {color:  rgb(10, 78, 10, 1)}
+  }
+
+.x {
+    color:  rgb(10, 78, 10, 1);
+}
+  
+.fadeo {
     animation: fadeIn linear 1s;
     -webkit-animation: fadeIn linear 1s;
     -moz-animation: fadeIn linear 1s;
@@ -69,31 +107,33 @@ html, body {
 }
   
   @keyframes fadeIn {
-    0% {color: rgb(16, 23, 31, 0);}
-    100% {color: rgb(16, 23, 31, 1);}
+    0% {color: rgba(66, 19, 10, 0);}
+    100% {color: rgba(66, 19, 10, 1);}
   }
   
   @-moz-keyframes fadeIn {
-    0% {color: rgb(16, 23, 31, 0);}
-    100% {color: rgb(16, 23, 31, 1);}
+    0% {color: rgba(66, 19, 10, 0);}
+    100% {color: rgba(66, 19, 10, 1);}
   }
   
   @-webkit-keyframes fadeIn {
-    0% {color: rgb(16, 23, 31, 0);}
-    100% {color: rgb(16, 23, 31, 1);}
+    0% {color: rgba(66, 19, 10, 0);}
+    100% {color: rgba(66, 19, 10, 1);}
   }
   
   @-o-keyframes fadeIn {
-    0% {color: rgb(16, 23, 31, 0);}
-    100% {color: rgb(16, 23, 31, 1);}
+    0% {color: rgba(66, 19, 10, 0);}
+    100% {color: rgba(66, 19, 10, 1);}
   }
   
   @-ms-keyframes fadeIn {
-      0% {color: rgb(16, 23, 31, 0);}
-    100% {color: rgb(16, 23, 31, 1);}
+    0% {color: rgba(66, 19, 10, 0);}
+    100% {color: rgba(66, 19, 10, 1);}
   }
-  
 
+.o {
+    color: rgba(66, 19, 10, 1);
+}
 
 
 #settings {

@@ -22,7 +22,7 @@ const player1 = player(undefined,"x");
 const player2 = player(undefined,"o");
 //Global End --------------------------
 
-//------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------
 //Controls the visual display of the board
 const displayController = (() => {
 
@@ -56,7 +56,8 @@ const displayController = (() => {
             } else {
                 if(player1Turn && !player1.isAi) {
                     slot.textContent = player1.shape;
-                    slot.classList.add("fade");
+                    slot.classList.add("fadex");
+                    slot.classList.add("x");
                     setSlots();
                     player1Turn = false;
                     player2Turn = true;
@@ -65,7 +66,8 @@ const displayController = (() => {
                     setTimeout(gameFlow.play, 1000);
                 } else if(player2Turn && !player2.isAi) {
                     slot.textContent = player2.shape;
-                    slot.classList.add("fade");
+                    slot.classList.add("fadeo");
+                    slot.classList.add("o");
                     setSlots();
                     player2Turn = false;
                     player1Turn = true;
@@ -138,17 +140,29 @@ const displayController = (() => {
     function restartGame() {
         slots.forEach(slot => {
             slot.textContent = undefined;
-            slot.classList.remove("fade");
+            slot.classList.remove("fadex");
+            slot.classList.remove("fadeo");
+            slot.classList.remove("x");
+            slot.classList.remove("o");
         });
+        setSlots();
         player1Turn = true;
         player2Turn = false;
+
+        if (player1.isAi) {
+            gameFlow.play();
+        }
     }   
 
     function goToSettings() {
         slots.forEach(slot => {
             slot.textContent = undefined;
-            slot.classList.remove("fade");
+            slot.classList.remove("fadex");
+            slot.classList.remove("fadeo");
+            slot.classList.remove("x");
+            slot.classList.remove("o");
         });
+        setSlots();
         settings.classList.remove("hidden");
         game.classList.add("hidden");
         player1Turn = undefined;
@@ -172,7 +186,7 @@ const displayController = (() => {
     };
 })();
 
-//------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------
 //Check for winning conditions
 const winCondition = (() => {
 
@@ -203,9 +217,7 @@ const winCondition = (() => {
         
         displayController.slots.forEach (el => {
             if (el.textContent === 'o' || el.textContent === 'x' ) {
-                i++;
-                console.log(i);
-                
+                i++;   
             }
 
         });
@@ -213,16 +225,32 @@ const winCondition = (() => {
         if (i < 9) {
             x.forEach(e => {
                 if (e[0] === 'o' && e[1] === 'o' && e[2] === 'o') {
+
                     i = undefined;
+               
                     win ('o');
                 } else if (e[0] === 'x' && e[1] === 'x' && e[2] === 'x') {
                     i = undefined;
+                 
                     win ('x');
                 }
             });
         } else {
-            i = undefined;
-            win('tie');
+            x.forEach(e => {
+                if (e[0] === 'o' && e[1] === 'o' && e[2] === 'o') {
+                    i = undefined;
+                 
+                    win ('o');
+                } else if (e[0] === 'x' && e[1] === 'x' && e[2] === 'x') {
+                    i = undefined;
+                
+                    win ('x');
+                } else {
+                    i = undefined;
+                    win('tie');
+                }
+                
+            });
         }
 
        
@@ -235,10 +263,12 @@ const winCondition = (() => {
             player2Turn = undefined;
             return;
         } else if (x === "o") {
+
             player1Turn = undefined;
             player2Turn = undefined;
             return;
         } else {
+
             player1Turn = undefined;
             player2Turn = undefined;
 
@@ -249,7 +279,7 @@ const winCondition = (() => {
     return {set:set};
 })();
 
-//------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------
 //Module that runs ai functionality if it's an ai's turn to play
 const gameFlow = (() => {
 
@@ -259,7 +289,8 @@ const gameFlow = (() => {
             let x = Math.floor(Math.random() * displayController.slots.length);
             if (!displayController.slots[x].textContent){
                 displayController.slots[x].textContent = `${player1.shape}`;
-                displayController.slots[x].classList.add("fade");
+                displayController.slots[x].classList.add("fadex");
+                displayController.slots[x].classList.add("x");
                 player1Turn = false;
                 player2Turn = true;
                 displayController.set();
@@ -274,7 +305,8 @@ const gameFlow = (() => {
             let x = Math.floor(Math.random() * displayController.slots.length);
             if (!displayController.slots[x].textContent){
                 displayController.slots[x].textContent = `${player2.shape}`;
-                displayController.slots[x].classList.add("fade");
+                displayController.slots[x].classList.add("fadeo");
+                displayController.slots[x].classList.add("o");
                 player2Turn = false;
                 player1Turn = true;
                 displayController.set();
