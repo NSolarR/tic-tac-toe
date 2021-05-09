@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    margin: auto;
 }
 
 .board-container {
@@ -19,6 +20,43 @@ html, body {
     position: absolute !important;
     top: -9999px !important;
     left: -9999px !important;
+}
+
+#game {
+    display:flex;
+    flex-direction: row;
+}
+
+.restart {
+    border-style: solid;
+    border-color: rgb(16, 23, 31);
+    border-radius: 10px;
+    background-color: rgb(104, 197, 182);
+    transform: scale(1.5);
+    width: 200px;
+    margin-top: 75vh;
+    margin-left: 25vh;
+    height: 100%;
+}
+
+.restart:hover {
+    opacity: 0.75;
+}
+
+.change {
+    border-style: solid;
+    border-color: rgb(16, 23, 31);
+    border-radius: 10px;
+    background-color: rgb(104, 197, 182);
+    transform: scale(1.5);
+    width: 200px;
+    margin-top: 75vh;
+    margin-right: 25vh;
+    height: 100%;;
+}
+
+.change:hover {
+    opacity: 0.75;
 }
 
 .board{
